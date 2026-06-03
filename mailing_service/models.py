@@ -48,8 +48,8 @@ class Mailing(models.Model):
     end_time = models.DateTimeField(verbose_name='Дата и время окончания отправки')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=CREATED, verbose_name='Статус')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение',
-                                help_text='Выберете нужное письмо')
-    recipients = models.ManyToManyField(Recipient, related_name='mailings')
+                                help_text='Выберете сообщение для отправки рассылки')
+    recipients = models.ManyToManyField(Recipient, related_name='mailings', help_text='Выберете получателей рассылки')
 
     def update_status(self):
         """Проверка статуса на текущую дату """
@@ -89,5 +89,5 @@ class MailingAttempt(models.Model):
 
     class Meta:
         verbose_name = 'Попытка рассылки'
-        verbose_name_plural = 'Попытки рассылки'
+        verbose_name_plural = 'Попытки рассылок'
         ordering = ['status']

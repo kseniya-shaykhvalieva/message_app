@@ -1,0 +1,33 @@
+{% extends 'mailing_service/base.html' %}
+{% block content%}
+<style>
+    html, body { height: 100%; margin: 0; padding: 0; }
+</style>
+<div class="card" style="border-radius: 10px; overflow: hidden; min-height: 100vh; margin-bottom: 0;">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
+        <div class="container-fluid"><a class="navbar-brand">Рассылки</a></div>
+        <a href="{% url 'mailing_service:mailing_create' %}"
+           class="btn btn-light me-3">Создать</a>
+    </nav>
+    <div class="container-fluid bg-dark text-white" style="flex-grow: 1;">
+        {% for mailing in object_list %}
+        <div class="row bg-secondary bg-opacity-75 text-white p-2 mb-2 rounded-3">
+            <div class="col-4 text-start">{{ mailing.message|truncatechars:50 }}"></div>
+            <div class="col-2 text-start">{{ mailing.start_time }}></div>
+            <div class="col-2 text-start">{{ mailing.end_time }}></div>
+            <div class="col-2 text-start
+            {% if mailing.status == mailing.CREATED %} text-white
+            {% elif mailing.status == mailing.STARTED %} text-warning
+            {% else %} text-success
+            {% endif %}">
+                {{ mailing.get_status_display }}
+            </div>
+            <div class="col-2 text-start">
+                <a href="{% url 'mailing_service:mailing_detail' mailing.pk %}"
+                   class="btn btn-primary btn-sm text-decoration-none">Посмотреть детали</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
