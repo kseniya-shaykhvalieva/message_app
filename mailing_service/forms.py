@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import timezone
 
 from mailing_service.models import Recipient, Message, Mailing
 
@@ -60,3 +61,16 @@ class MailingForm(forms.ModelForm):
         self.fields['end_time'].widget.attrs.update({
             'class': 'form-control',
         })
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get('start_time')
+        end_time = cleaned_data.get('end_time')
+        now = timezone.now()
+
+        if start_time and end_time:
+            if start_time < now:
+                self.add_error('start_time', 'Дата старта не должна быть в прошлом')
+
+            elif start_time >= end_time:
+                self.add_error('end_time', 'Дата старта должна быть раньше даты окончания')
