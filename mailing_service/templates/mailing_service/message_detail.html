@@ -1,0 +1,28 @@
+{% extends 'mailing_service/base.html' %}
+{% block content%}
+
+
+<div class="container-fluid" style="min-height: 100vh; background-color: black;">
+    <div class="row text-center">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        Сообщение
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">{{ object.subject }}</li>
+                        <li class="list-group-item" style="min-height: 200px">{{ object.body }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mt-3 mx-auto">
+            <a href="{% url 'mailing_service:message_list' %}" class="btn btn-outline-secondary">Вернуться ко всем сообщениям</a>
+            <a href="{% url 'mailing_service:message_update' message.pk %}" class="btn btn-light">Редактировать</a>
+            <a href="{% url 'mailing_service:message_delete' message.pk %}" class="btn btn-light">Удалить</a>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

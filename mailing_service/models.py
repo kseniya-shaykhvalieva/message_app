@@ -20,8 +20,8 @@ class Recipient(models.Model):
 
 class Message(models.Model):
     """Сообщение"""
-    subject = models.CharField(max_length=250, verbose_name='Тема письма', help_text='Введите название темы письма')
-    body = models.TextField(verbose_name='Тело письма', help_text='Введите ваш текст для рассылки')
+    subject = models.CharField(max_length=250, verbose_name='Тема письма')
+    body = models.TextField(verbose_name='Тело письма')
 
     def __str__(self):
         return self.subject
