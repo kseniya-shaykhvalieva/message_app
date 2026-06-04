@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Recipient, Message, Mailing
+from .models import Recipient, Message, Mailing, MailingAttempt
 
 
 @admin.register(Recipient)
@@ -21,3 +21,10 @@ class MailingAdmin(admin.ModelAdmin):
     list_display = ('id', 'start_time', 'end_time', 'status', 'message',)
     list_filter = ('start_time', 'status',)
     search_fields = ('message', 'status',)
+
+
+@admin.register(MailingAttempt)
+class MailingAttemptAdmin(admin.ModelAdmin):
+    list_display = ('id', 'mailing', 'attempt_time', 'status', 'server_response',)
+    list_filter = ('id',)
+    search_fields = ('mailing', 'status',)

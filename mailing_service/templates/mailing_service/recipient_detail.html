@@ -19,8 +19,7 @@
             </div>
         </div>
         <div class="col-md-6 mt-3 mx-auto">
-            <a href="{% url 'mailing_service:recipient_list' %}" class="btn btn-outline-secondary">Вернуться на
-                главную</a>
+            <a href="{% url 'mailing_service:recipient_list' %}" class="btn btn-outline-secondary">Вернуться к списку получателей</a>
             <a href="{% url 'mailing_service:recipient_update' recipient.pk %}" class="btn btn-light">Редактировать</a>
             <a href="{% url 'mailing_service:recipient_delete' recipient.pk %}" class="btn btn-light">Удалить</a>
 

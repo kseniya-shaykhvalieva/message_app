@@ -1,8 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from mailing_service.forms import RecipientForm, MessageForm, MailingForm
 from mailing_service.models import Recipient, Message, Mailing
@@ -69,6 +68,7 @@ class MailingDetailView(DetailView):
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
         obj.update_status()
+        obj.save()
         return obj
 
 
@@ -93,3 +93,14 @@ class SendMailingView(View):
     def post(self, request, pk):
         send_mailing(pk)
         return redirect('mailing_service:mailing_list')
+
+
+class HomeTemplateView(TemplateView):
+    template_name = 'mailing_service/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['all_count'] = Mailing.objects.count()
+        context['active_count'] = Mailing.objects.filter(status=Mailing.STARTED).count()
+        context['unique_recipients_count'] = Recipient.objects.count()
+        return context

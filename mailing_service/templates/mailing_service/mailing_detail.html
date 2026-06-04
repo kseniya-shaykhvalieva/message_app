@@ -15,16 +15,28 @@
                         <li class="list-group-item">{{ object.start_time }}</li>
                         <li class="list-group-item">{{ object.end_time }}</li>
                         <li class="list-group-item">{{ object.get_status_display }}</li>
-                        <li class="list-group-item" style="min-height: 200px">{{ object.recipients }}</li>
+                        <li class="list-group-item">Получатели:
+                            {% for recipient in object.recipients.all %}
+                            <div class="list-group-item">
+                                {{ recipient.name }} ({{ recipient.email }})
+                            </div>
+                            {% endfor %}
+                        </li>
+
                     </ul>
                 </div>
             </div>
         </div>
         <div class="col-md-6 mt-3 mx-auto">
-            <a href="{% url 'mailing_service:mailing_list' %}" class="btn btn-outline-secondary">Вернуться к рассылкам</a>
-            <a href="{% url 'mailing_service:mailing_update' mailing.pk %}" class="btn btn-light">Редактировать</a>
-            <a href="{% url 'mailing_service:mailing_delete' mailing.pk %}" class="btn btn-light">Удалить</a>
-
+            <a href="{% url 'mailing_service:mailing_list' %}" class="btn btn-outline-secondary">Вернуться к
+                рассылкам</a>
+            <a href="{% url 'mailing_service:mailing_update' mailing.pk %}" class="btn btn-outline-secondary">Редактировать</a>
+            <a href="{% url 'mailing_service:mailing_delete' mailing.pk %}"
+               class="btn btn-outline-secondary">Удалить</a>
+            <form method="post" style="display: inline-block;" action="{% url 'mailing_service:send' object.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-light">Отправить</button>
+            </form>
         </div>
     </div>
 </div>
