@@ -18,13 +18,13 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'start_time', 'end_time', 'status', 'message',)
+    list_display = ('id', 'start_time', 'end_time', 'get_status_display', 'message',)
     list_filter = ('start_time', 'status',)
     search_fields = ('message', 'status',)
 
 
 @admin.register(MailingAttempt)
 class MailingAttemptAdmin(admin.ModelAdmin):
-    list_display = ('id', 'mailing', 'attempt_time', 'status', 'server_response',)
+    list_display = ('id', 'mailing', 'attempt_time', 'get_status_display', 'server_response',)
     list_filter = ('id',)
     search_fields = ('mailing', 'status',)

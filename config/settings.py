@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mailing_service',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -96,22 +97,20 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-#############
+AUTH_USER_MODEL = 'users.CustomUser'
 
-# AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_REDIRECT_URL = '/mailing_service/home/'
+LOGIN_URL = '/mailing_service/home/'
+LOGOUT_REDIRECT_URL = '/mailing_service/home/'
 
-# LOGIN_REDIRECT_URL = '/home/'
-# LOGIN_URL = '/home/'
-# LOGOUT_REDIRECT_URL = '/home/'
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.yandex.ru'
-# EMAIL_PORT = 465
-# EMAIL_USE_TLS = False
-# EMAIL_USE_SSL = True
-# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 # CACHES = {

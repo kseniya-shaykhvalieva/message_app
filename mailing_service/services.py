@@ -1,6 +1,7 @@
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 
+from config.settings import DEFAULT_FROM_EMAIL
 from .models import Mailing, MailingAttempt
 from django.utils import timezone
 
@@ -18,7 +19,7 @@ def send_mailing(mailing_pk):
             send_mail(
                 subject=mailing.message.subject,
                 message=mailing.message.body,
-                from_email='ksyunyabakkanskaya@yandex.ru',
+                from_email=DEFAULT_FROM_EMAIL,
                 recipient_list=[recipient.email],
             )
             status = MailingAttempt.SUCCESS
