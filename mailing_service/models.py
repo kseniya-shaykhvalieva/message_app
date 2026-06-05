@@ -2,6 +2,8 @@ from django.utils import timezone
 
 from django.db import models
 
+from users.models import CustomUser
+
 
 class Recipient(models.Model):
     """Получатель"""
@@ -50,6 +52,7 @@ class Mailing(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение',
                                 help_text='Выберете сообщение для отправки рассылки')
     recipients = models.ManyToManyField(Recipient, related_name='mailings', help_text='Выберете получателей рассылки')
+    owner = models.ForeignKey(CustomUser, verbose_name='Владелец', on_delete=models.CASCADE)
 
     def update_status(self):
         """Проверка статуса на текущую дату """

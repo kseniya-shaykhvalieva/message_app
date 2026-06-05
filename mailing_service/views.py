@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from mailing_service.forms import RecipientForm, MessageForm, MailingForm
-from mailing_service.models import Recipient, Message, Mailing
+from mailing_service.models import Recipient, Message, Mailing, MailingAttempt
 from mailing_service.services import send_mailing
 
 
@@ -88,6 +88,13 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('mailing_service:mailing_list')
+    
+    def form_valid(self, form):
+        mailing = form.save(commit=False)
+        user = self.request.user
+        mailing.owner = user
+        mailing.save()
+        return super().form_valid(form)
 
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
@@ -105,3 +112,15 @@ class SendMailingView(LoginRequiredMixin, View):
     def post(self, request, pk):
         send_mailing(pk)
         return redirect('mailing_service:mailing_list')
+
+
+class StatisticsTemplateView(TemplateView):
+    template_name = 'mailing_service/statistics.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        owner_mailing = Mailing.objects.filter(owner=self.request.user)
+        context['success_count'] = MailingAttempt.objects.filter(mailing__in=owner_mailing, status=MailingAttempt.SUCCESS).count()
+        context['failed_count'] = MailingAttempt.objects.filter(mailing__in=owner_mailing, status=MailingAttempt.FAILED).count()
+        context['message_count'] = Message.objects.filter(mailing__in=owner_mailing).count()
+        return context

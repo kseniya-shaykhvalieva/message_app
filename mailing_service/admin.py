@@ -18,7 +18,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'start_time', 'end_time', 'get_status_display', 'message',)
+    list_display = ('id', 'owner', 'start_time', 'end_time', 'get_status_display', 'message',)
     list_filter = ('start_time', 'status',)
     search_fields = ('message', 'status',)
 
