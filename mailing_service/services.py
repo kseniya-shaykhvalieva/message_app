@@ -8,6 +8,9 @@ from django.utils import timezone
 
 def send_mailing(mailing_pk):
     mailing = get_object_or_404(Mailing, pk=mailing_pk)
+    if not mailing.is_active:
+        return False
+
     now = timezone.now()
 
     if now < mailing.start_time or now > mailing.end_time:

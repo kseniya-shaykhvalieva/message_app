@@ -30,6 +30,7 @@
         <div class="col-md-6 mt-3 mx-auto">
             <a href="{% url 'mailing_service:mailing_list' %}" class="btn btn-outline-secondary">Вернуться к
                 рассылкам</a>
+            {% if not perms.mailing_service.can_deactivate_mailing %}
             <a href="{% url 'mailing_service:mailing_update' mailing.pk %}" class="btn btn-outline-secondary">Редактировать</a>
             <a href="{% url 'mailing_service:mailing_delete' mailing.pk %}"
                class="btn btn-outline-secondary">Удалить</a>
@@ -37,6 +38,7 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-light">Отправить</button>
             </form>
+            {% endif %}
         </div>
     </div>
 </div>

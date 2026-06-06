@@ -1,13 +1,32 @@
 import secrets
 
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
+from django.views import View
+from django.views.generic import CreateView, ListView
 
 from config.settings import DEFAULT_FROM_EMAIL
 from users.forms import UserRegisterForm
 from users.models import CustomUser
+
+
+class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = CustomUser
+    permission_required = 'users.can_block_user'
+    template_name = 'users/user_list.html'
+
+
+class UserBlockView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    model = CustomUser
+    permission_required = 'users.can_block_user'
+
+    def post(self, request, pk):
+        user = get_object_or_404(CustomUser, pk=pk)
+        user.is_active = not user.is_active
+        user.save()
+        return redirect('users:user_list')
 
 
 class UserCreateView(CreateView):

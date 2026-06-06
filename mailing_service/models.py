@@ -10,6 +10,7 @@ class Recipient(models.Model):
     email = models.EmailField(unique=True, verbose_name='Email')
     name = models.CharField(max_length=200, verbose_name='Ф.И.О.')
     comment = models.TextField(verbose_name='Комментарий', blank=True, null=True)
+    owner = models.ForeignKey(CustomUser, verbose_name='Владелец', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -24,6 +25,7 @@ class Message(models.Model):
     """Сообщение"""
     subject = models.CharField(max_length=250, verbose_name='Тема письма')
     body = models.TextField(verbose_name='Тело письма')
+    owner = models.ForeignKey(CustomUser, verbose_name='Владелец', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.subject
@@ -53,6 +55,7 @@ class Mailing(models.Model):
                                 help_text='Выберете сообщение для отправки рассылки')
     recipients = models.ManyToManyField(Recipient, related_name='mailings', help_text='Выберете получателей рассылки')
     owner = models.ForeignKey(CustomUser, verbose_name='Владелец', on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True, verbose_name='Активна')
 
     def update_status(self):
         """Проверка статуса на текущую дату """
@@ -71,6 +74,9 @@ class Mailing(models.Model):
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
         ordering = ['message']
+        permissions = [
+            ('can_deactivate_mailing', 'Может отключать рассылки'),
+        ]
 
 
 class MailingAttempt(models.Model):

@@ -4,7 +4,7 @@ from mailing_service.apps import MailingServiceConfig
 from mailing_service.views import RecipientListView, RecipientDetailView, RecipientCreateView, RecipientUpdateView, \
     RecipientDeleteView, MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, \
     MailingListView, MailingDetailView, MailingCreateView, MailingUpdateView, MailingDeleteView, HomeTemplateView, \
-    SendMailingView, StatisticsTemplateView
+    SendMailingView, StatisticsTemplateView, MailingToggleActiveView
 
 app_name = MailingServiceConfig.name
 
@@ -27,4 +27,5 @@ urlpatterns = [
     path('mailing/detail/<int:pk>/delete/', MailingDeleteView.as_view(), name='mailing_delete'),
     path('mailing/detail/<int:pk>/send/', SendMailingView.as_view(), name='send'),
     path('statistics/', StatisticsTemplateView.as_view(), name='statistics'),
+    path('mailing/<int:pk>/toggle/', MailingToggleActiveView.as_view(), name='toggle'),
 ]

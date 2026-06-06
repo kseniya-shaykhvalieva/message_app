@@ -13,16 +13,22 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'mailing_service:message_list' %}">Письма</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'mailing_service:mailing_list' %}">Рассылки</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'mailing_service:statistics' %}">Статистика и отчеты</a>
-                    </li></ul>
-                    <form method="post" action="{% url 'users:logout' %}">
-                        {% csrf_token %}
-                        <button class="btn btn-outline-light" type="submit">Выйти</button>
-                    </form>
+                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'mailing_service:mailing_list' %}">Рассылки</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mailing_service:statistics' %}">Статистика и
+                        отчеты</a></li>
+                    {% if perms.users.can_block_user %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'users:user_list' %}">Пользователи</a></li>
+                    {% endif %}
+                </ul>
+                <form method="post" action="{% url 'users:logout' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-light" type="submit">Выйти</button>
+                </form>
             </div>
-            {% else %}<div class="d-flex gap-2 ms-auto">
-            <a class="btn btn-light" href="{% url 'users:register' %}">Зарегистрироваться</a>
+            {% else %}
+            <div class="d-flex gap-2 ms-auto">
+                <a class="btn btn-light" href="{% url 'users:register' %}">Зарегистрироваться</a>
                 <a class="btn btn-light" href="{% url 'users:login' %}">Войти</a></div>
             {% endif %}
         </div>
