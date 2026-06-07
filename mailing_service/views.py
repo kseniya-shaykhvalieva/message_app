@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from mailing_service.forms import RecipientForm, MessageForm, MailingForm
@@ -21,6 +23,7 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
         return context
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class RecipientListView(LoginRequiredMixin, ListView):
     model = Recipient
 
@@ -32,6 +35,7 @@ class RecipientListView(LoginRequiredMixin, ListView):
             return Recipient.objects.filter(owner=user)
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class RecipientDetailView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DetailView):
     model = Recipient
 
@@ -60,6 +64,7 @@ class RecipientDeleteView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DeleteV
     success_url = reverse_lazy('mailing_service:recipient_list')
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class MessageListView(LoginRequiredMixin, ListView):
     model = Message
 
@@ -71,6 +76,7 @@ class MessageListView(LoginRequiredMixin, ListView):
             return Message.objects.filter(owner=user)
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class MessageDetailView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DetailView):
     model = Message
 
@@ -99,6 +105,7 @@ class MessageDeleteView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DeleteVie
     success_url = reverse_lazy('mailing_service:message_list')
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
 
@@ -110,6 +117,7 @@ class MailingListView(LoginRequiredMixin, ListView):
             return Mailing.objects.filter(owner=user)
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class MailingDetailView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DetailView):
     model = Mailing
 
