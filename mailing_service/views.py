@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from mailing_service.forms import RecipientForm, MessageForm, MailingForm
-from mailing_service.mixin import UserIsOwnerMixin, UserIsOwnerOrManagerMixin
+from mailing_service.mixin import UserIsOwnerOrManagerMixin
 from mailing_service.models import Recipient, Message, Mailing, MailingAttempt
 from mailing_service.services import send_mailing
 
@@ -32,9 +32,8 @@ class RecipientListView(LoginRequiredMixin, ListView):
             return Recipient.objects.filter(owner=user)
 
 
-class RecipientDetailView(LoginRequiredMixin, PermissionRequiredMixin, UserIsOwnerOrManagerMixin, DetailView):
+class RecipientDetailView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DetailView):
     model = Recipient
-    permission_required = 'mailing_service.can_deactivate_mailing'
 
 
 class RecipientCreateView(LoginRequiredMixin, CreateView):
@@ -42,14 +41,21 @@ class RecipientCreateView(LoginRequiredMixin, CreateView):
     form_class = RecipientForm
     success_url = reverse_lazy('mailing_service:recipient_list')
 
+    def form_valid(self, form):
+        recipient = form.save(commit=False)
+        user = self.request.user
+        recipient.owner = user
+        recipient.save()
+        return super().form_valid(form)
 
-class RecipientUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
+
+class RecipientUpdateView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, UpdateView):
     model = Recipient
     form_class = RecipientForm
     success_url = reverse_lazy('mailing_service:recipient_list')
 
 
-class RecipientDeleteView(LoginRequiredMixin, UserIsOwnerMixin, DeleteView):
+class RecipientDeleteView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DeleteView):
     model = Recipient
     success_url = reverse_lazy('mailing_service:recipient_list')
 
@@ -65,9 +71,8 @@ class MessageListView(LoginRequiredMixin, ListView):
             return Message.objects.filter(owner=user)
 
 
-class MessageDetailView(LoginRequiredMixin, PermissionRequiredMixin, UserIsOwnerOrManagerMixin, DetailView):
+class MessageDetailView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DetailView):
     model = Message
-    permission_required = 'mailing_service.can_deactivate_mailing'
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
@@ -75,14 +80,21 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
     form_class = MessageForm
     success_url = reverse_lazy('mailing_service:message_list')
 
+    def form_valid(self, form):
+        message = form.save(commit=False)
+        user = self.request.user
+        message.owner = user
+        message.save()
+        return super().form_valid(form)
 
-class MessageUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
+
+class MessageUpdateView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, UpdateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('mailing_service:message_list')
 
 
-class MessageDeleteView(LoginRequiredMixin, UserIsOwnerMixin, DeleteView):
+class MessageDeleteView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DeleteView):
     model = Message
     success_url = reverse_lazy('mailing_service:message_list')
 
@@ -98,9 +110,8 @@ class MailingListView(LoginRequiredMixin, ListView):
             return Mailing.objects.filter(owner=user)
 
 
-class MailingDetailView(LoginRequiredMixin, PermissionRequiredMixin, UserIsOwnerOrManagerMixin, DetailView):
+class MailingDetailView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DetailView):
     model = Mailing
-    permission_required = 'mailing_service.can_deactivate_mailing'
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
@@ -122,13 +133,13 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class MailingUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
+class MailingUpdateView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, UpdateView):
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('mailing_service:mailing_list')
 
 
-class MailingDeleteView(LoginRequiredMixin, UserIsOwnerMixin, DeleteView):
+class MailingDeleteView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DeleteView):
     model = Mailing
     success_url = reverse_lazy('mailing_service:mailing_list')
 

@@ -6,10 +6,8 @@
 <div class="card" style="border-radius: 10px; overflow: hidden; min-height: 100vh; margin-bottom: 0;">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
         <div class="container-fluid"><a class="navbar-brand">Рассылки</a></div>
-        {% if not perms.mailing_service.can_deactivate_mailing %}
         <a href="{% url 'mailing_service:mailing_create' %}"
            class="btn btn-light me-3">Создать</a>
-        {% endif %}
     </nav>
     <div class="container-fluid bg-dark text-white" style="flex-grow: 1;">
         {% for mailing in object_list %}

@@ -1,14 +1,6 @@
 from django.core.exceptions import PermissionDenied
 
 
-class UserIsOwnerMixin:
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-        if self.request.user == obj.owner:
-            return obj
-        raise PermissionDenied
-
-
 class UserIsOwnerOrManagerMixin:
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)

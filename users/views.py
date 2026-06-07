@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, TemplateView
 
 from config.settings import DEFAULT_FROM_EMAIL
 from users.forms import UserRegisterForm

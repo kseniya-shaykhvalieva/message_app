@@ -20,7 +20,7 @@
         </div>
         <div class="col-md-6 mt-3 mx-auto">
             <a href="{% url 'mailing_service:recipient_list' %}" class="btn btn-outline-secondary">Вернуться к списку получателей</a>
-            {% if not perms.mailing_service.can_deactivate_mailing %}
+            {% if object.owner == request.user %}
             <a href="{% url 'mailing_service:recipient_update' recipient.pk %}" class="btn btn-light">Редактировать</a>
             <a href="{% url 'mailing_service:recipient_delete' recipient.pk %}" class="btn btn-light">Удалить</a>
             {% endif %}

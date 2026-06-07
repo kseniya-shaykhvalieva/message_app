@@ -7,7 +7,7 @@ from mailing_service.models import Recipient, Message, Mailing
 class RecipientForm(forms.ModelForm):
     class Meta:
         model = Recipient
-        fields = '__all__'
+        exclude = ('owner',)
 
     def __init__(self, *args, **kwargs):
         super(RecipientForm, self).__init__(*args, **kwargs)
@@ -28,7 +28,7 @@ class RecipientForm(forms.ModelForm):
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = '__all__'
+        exclude = ('owner',)
 
     def __init__(self, *args, **kwargs):
         super(MessageForm, self).__init__(*args, **kwargs)
