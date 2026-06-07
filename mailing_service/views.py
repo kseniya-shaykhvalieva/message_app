@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib import messages
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -155,6 +156,8 @@ class MailingDeleteView(LoginRequiredMixin, UserIsOwnerOrManagerMixin, DeleteVie
 class SendMailingView(LoginRequiredMixin, View):
     def post(self, request, pk):
         send_mailing(pk)
+        if not send_mailing(pk):
+            messages.error(request, 'Отправка недоступна: рассылка неактивна или время отправки не наступило')
         return redirect('mailing_service:mailing_list')
 
 
