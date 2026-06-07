@@ -1,13 +1,17 @@
+import os
 from django.contrib.auth import get_user_model
 from django.core.management import BaseCommand
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         User = get_user_model()
-        user = User.objects.create(email='admin@mail.ru')
+        user = User.objects.create(email=os.getenv('SUPER_USER_EMAIL'))
 
-        user.set_password('123qwerty987zxc')
+        user.set_password(os.getenv('SUPER_USER_PASSWORD'))
         user.is_active = True
         user.is_staff = True
         user.is_superuser = True
