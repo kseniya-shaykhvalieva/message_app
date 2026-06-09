@@ -1,0 +1,32 @@
+{% extends 'mailing_service/base.html' %}
+{% block content%}
+
+
+<div class="container-fluid" style="min-height: 100vh; background-color: black;">
+    <div class="row text-center">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        Войдите на сайт
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-light">
+                                    Войти
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

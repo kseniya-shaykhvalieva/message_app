@@ -1,0 +1,36 @@
+<div class="card" style="border-radius: 10px; overflow: hidden;">
+    <nav class="navbar navbar-dark bg-dark" aria-label="First navbar example">
+        <div class="container-fluid"><a class="navbar-brand" href="{% url 'mailing_service:home' %}">Сервис рассылки</a>
+            {% if user.is_authenticated %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01"
+                    aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarsExample01">
+                <ul class="navbar-nav me-auto mb-2">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mailing_service:home' %}">Главная</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mailing_service:recipient_list' %}">Получатели</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mailing_service:message_list' %}">Письма</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'mailing_service:mailing_list' %}">Рассылки</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mailing_service:statistics' %}">Статистика и
+                        отчеты</a></li>
+                    {% if perms.users.can_block_user %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'users:user_list' %}">Пользователи</a></li>
+                    {% endif %}
+                </ul>
+                <form method="post" action="{% url 'users:logout' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-light" type="submit">Выйти</button>
+                </form>
+            </div>
+            {% else %}
+            <div class="d-flex gap-2 ms-auto">
+                <a class="btn btn-light" href="{% url 'users:register' %}">Зарегистрироваться</a>
+                <a class="btn btn-light" href="{% url 'users:login' %}">Войти</a></div>
+            {% endif %}
+        </div>
+    </nav>
+</div>

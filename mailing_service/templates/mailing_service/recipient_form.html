@@ -1,0 +1,33 @@
+{% extends 'mailing_service/base.html' %}
+{% block content%}
+
+
+<div class="container-fluid" style="min-height: 100vh; background-color: black;">
+    <div class="row text-center">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        Получатель
+                    </div>
+                    <form method="post">
+                        <div class="card-body">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+
+                            <button type="submit" class="btn btn-light">
+                                {% if object %}
+                                Сохранить
+                                {% else %}
+                                Создать
+                                {% endif %}
+                            </button>
+                            <a href="{% url 'mailing_service:recipient_list' %}" class="btn btn-outline-secondary">Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
